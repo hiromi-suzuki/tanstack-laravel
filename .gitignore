@@ -1,0 +1,10 @@
+node_modules/
+.output/
+dist/
+.tanstack/
+.env
+.env.*
+!.env.example
+backend/vendor/
+backend/.env
+backend/database/*.sqlite

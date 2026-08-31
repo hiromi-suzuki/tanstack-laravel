@@ -1,0 +1,26 @@
+{
+  "name": "TanStack Start + Laravel TODO",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "frontend",
+  "workspaceFolder": "/workspaces/tanstack-laravel",
+  "runServices": ["frontend", "backend"],
+  "forwardPorts": [3000, 8000],
+  "portsAttributes": {
+    "3000": { "label": "TanStack Start" },
+    "8000": { "label": "Laravel API" }
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "features": {
+    "ghcr.io/devcontainers/features/sshd:1": { "version": "latest" }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "bmewburn.vscode-intelephense-client",
+        "xdebug.php-debug"
+      ]
+    }
+  }
+}
+

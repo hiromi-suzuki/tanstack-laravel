@@ -1,0 +1,23 @@
+services:
+  frontend:
+    image: mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm
+    working_dir: /workspaces/tanstack-laravel
+    volumes:
+      - .:/workspaces/tanstack-laravel:cached
+    command: sleep infinity
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: .
+      dockerfile: .devcontainer/backend.Dockerfile
+    working_dir: /workspaces/tanstack-laravel/backend
+    volumes:
+      - .:/workspaces/tanstack-laravel:cached
+    command: bash -c 'bash /workspaces/tanstack-laravel/.devcontainer/backend-setup.sh && php artisan serve --host=0.0.0.0 --port=8000'
+    ports:
+      - "8000:8000"
+
