@@ -1,15 +1,8 @@
-export type Todo = {
-  id: number
-  title: string
-  completed: boolean
-  created_at: string
-}
+import type { Todo } from './types'
 
 async function request<T>(input: RequestInfo | URL, init?: RequestInit): Promise<T> {
   const response = await fetch(input, init)
-  if (!response.ok) {
-    throw new Error(`API request failed: ${response.status}`)
-  }
+  if (!response.ok) throw new Error(`API request failed: ${response.status}`)
   return await response.json() as T
 }
 
@@ -35,7 +28,5 @@ export function updateTodo(id: number, changes: Partial<Pick<Todo, 'title' | 'co
 
 export async function deleteTodo(id: number) {
   const response = await fetch(`/api/todos/${id}`, { method: 'DELETE' })
-  if (!response.ok) {
-    throw new Error(`API request failed: ${response.status}`)
-  }
+  if (!response.ok) throw new Error(`API request failed: ${response.status}`)
 }
