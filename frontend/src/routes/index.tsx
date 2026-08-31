@@ -1,7 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
-
-type Todo = { id: number; title: string; completed: boolean; created_at: string }
+import { createTodo, deleteTodo as removeTodo, getTodos, updateTodo as saveTodo, type Todo } from '../lib/api'
 
 export const Route = createFileRoute('/')({ component: TodoPage })
 
@@ -15,9 +14,7 @@ function TodoPage() {
   const loadTodos = async () => {
     setLoading(true)
     try {
-      const response = await fetch('/api/todos')
-      if (!response.ok) throw new Error('TODOを取得できませんでした。')
-      setTodos(await response.json() as Todo[])
+      setTodos(await getTodos())
       setError('')
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'エラーが発生しました。')
@@ -32,26 +29,31 @@ function TodoPage() {
     event.preventDefault()
     const value = title.trim()
     if (!value) return
-    const response = await fetch('/api/todos', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title: value }),
-    })
-    if (!response.ok) { setError('TODOを追加できませんでした。'); return }
-    setTitle('')
-    await loadTodos()
+    try {
+      await createTodo(value)
+      setTitle('')
+      await loadTodos()
+    } catch {
+      setError('TODOを追加できませんでした。')
+    }
   }
 
   const updateTodo = async (todo: Todo, changes: Partial<Todo>) => {
-    const response = await fetch(`/api/todos/${todo.id}`, {
-      method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(changes),
-    })
-    if (!response.ok) { setError('TODOを更新できませんでした。'); return }
-    await loadTodos()
+    try {
+      await saveTodo(todo.id, changes)
+      await loadTodos()
+    } catch {
+      setError('TODOを更新できませんでした。')
+    }
   }
 
   const deleteTodo = async (id: number) => {
-    const response = await fetch(`/api/todos/${id}`, { method: 'DELETE' })
-    if (!response.ok) { setError('TODOを削除できませんでした。'); return }
-    await loadTodos()
+    try {
+      await removeTodo(id)
+      await loadTodos()
+    } catch {
+      setError('TODOを削除できませんでした。')
+    }
   }
 
   const visibleTodos = todos.filter((todo) =>
@@ -81,4 +83,3 @@ function TodoPage() {
     </main>
   )
 }
-
