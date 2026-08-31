@@ -11,6 +11,8 @@ frontend/src/
 ├── routes/                 # TanStack Routerのファイルベースルート
 ├── features/todos/         # TODO機能の画面・API・型
 │   ├── TodoPage.tsx
+│   ├── TodoHeader.tsx / TodoForm.tsx / TodoFilters.tsx
+│   ├── TodoList.tsx / TodoFooter.tsx
 │   ├── api.ts
 │   └── types.ts
 ├── router.tsx              # Router factory
