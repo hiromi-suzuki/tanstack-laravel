@@ -1,4 +1,4 @@
-import { createRootRoute, HeadContent, Scripts } from '@tanstack/react-router'
+import { Outlet, createRootRoute, HeadContent, Scripts } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
 import '../styles.css'
 
@@ -10,8 +10,12 @@ export const Route = createRootRoute({
       { title: 'TODO Garden | TanStack Start + Laravel' },
     ],
   }),
-  shellComponent: RootDocument,
+  component: RootComponent,
 })
+
+function RootComponent() {
+  return <RootDocument><Outlet /></RootDocument>
+}
 
 function RootDocument({ children }: { children: ReactNode }) {
   return (
@@ -21,4 +25,3 @@ function RootDocument({ children }: { children: ReactNode }) {
     </html>
   )
 }
-
